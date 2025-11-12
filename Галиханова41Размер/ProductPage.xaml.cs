@@ -23,11 +23,10 @@ namespace Галиханова41Размер
         public ProductPage()
         {
             InitializeComponent();
-        }
 
-        private void StartBtn_Click(object sender, RoutedEventArgs e)
-        {
-            Manager.MainFrame.Navigate(new AddEditPage());
+            var currentProduct = Galihanova41Entities.GetContext().Product.ToList();
+                                            
+            ProductListView.ItemsSource = currentProduct;
         }
     }
 }
