@@ -16,6 +16,7 @@ namespace Галиханова41Размер
     public partial class Galihanova41Entities : DbContext
     {
         private static Galihanova41Entities _context;
+
         public static Galihanova41Entities GetContext()
         {
             if (_context == null)
