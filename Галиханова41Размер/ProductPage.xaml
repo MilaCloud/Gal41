@@ -13,12 +13,17 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-
-
-        <WrapPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+        <StackPanel Name="Login" Grid.Row="0" Orientation="Vertical" Visibility="Collapsed">
+            <TextBlock Name="FIOTB"></TextBlock>
+            <TextBlock Name="ROLETB"></TextBlock>
+        </StackPanel>
+        
+        
+        <WrapPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
             
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
                 <TextBlock Name="TBCount" FontSize="20"></TextBlock>
@@ -48,7 +53,7 @@
         </WrapPanel>
         
 
-        <ListView Grid.Row="2" Name="ProductListView">
+        <ListView Grid.Row="3" Name="ProductListView">
             <ListView.ItemTemplate>
                 <DataTemplate>
                   <Grid>

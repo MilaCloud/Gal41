@@ -20,9 +20,25 @@ namespace Галиханова41Размер
     /// </summary>
     public partial class ProductPage : Page
     {
-        public ProductPage()
+        public ProductPage(User user)
         {
             InitializeComponent();
+            if (user != null)
+            {
+                Login.Visibility = Visibility.Visible;
+                FIOTB.Text = "Вы авторизованны как: " + user.UserSurname + " " + user.UserName + " " + user.UserPatronymic;
+
+                switch (user.UserRole)
+                {
+                    case 1:
+                        ROLETB.Text = "Роль: Клиент"; break;
+                    case 2:
+                        ROLETB.Text = "Роль: Менеджер"; break;
+                    case 3:
+                        ROLETB.Text = "Роль: Администратор"; break;
+                }
+            }
+            
 
             var currentProduct = Galihanova41Entities.GetContext().Product.ToList();
                                             
