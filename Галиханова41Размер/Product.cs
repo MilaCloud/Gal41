@@ -11,7 +11,8 @@ namespace Галиханова41Размер
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Globalization;
+
     public partial class Product
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,7 +20,7 @@ namespace Галиханова41Размер
         {
             this.OrderProduct = new HashSet<OrderProduct>();
         }
-    
+
         public string ProductArticleNumber { get; set; }
         public string ProductName { get; set; }
         public string ProductUnit { get; set; }
@@ -43,8 +44,25 @@ namespace Галиханова41Размер
             }
         }
         public string ProductStatus { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderProduct> OrderProduct { get; set; }
+        public int Quantity { get; set; }
+
+        public int OldCost
+        {
+            get
+            {
+                if (ProductDiscountAmount > 0)
+                {
+                    // Округляем до целого числа
+                    return (int)Math.Round(ProductCost / (1 - ProductDiscountAmount / 100m));
+                }
+                else
+                {
+                    return (int)ProductCost;
+                }
+            }
+        }
     }
 }

@@ -20,9 +20,17 @@ namespace Галиханова41Размер
     /// </summary>
     public partial class ProductPage : Page
     {
+
+
+        List<OrderProduct> selectedOrderProducts = new List<OrderProduct>();
+        List<Product> selectedProducts = new List<Product>();
+        private Order currentOrder = new Order();
+        private OrderProduct currentOrderProduct = new OrderProduct();
+        private User currentUser;
         public ProductPage(User user)
         {
             InitializeComponent();
+            currentUser = user;
             if (user != null)
             {
                 Login.Visibility = Visibility.Visible;
@@ -38,10 +46,10 @@ namespace Галиханова41Размер
                         ROLETB.Text = "Роль: Администратор"; break;
                 }
             }
-            
+
 
             var currentProduct = Galihanova41Entities.GetContext().Product.ToList();
-                                            
+
             ProductListView.ItemsSource = currentProduct;
 
             ComboType.SelectedIndex = 0;
@@ -101,7 +109,7 @@ namespace Галиханова41Размер
             UpdateProducts();
         }
 
-      
+
         private void RButtonUp_Checked(object sender, RoutedEventArgs e)
         {
             UpdateProducts();
@@ -110,6 +118,69 @@ namespace Галиханова41Размер
         private void RButtonDown_Checked(object sender, RoutedEventArgs e)
         {
             UpdateProducts();
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (ProductListView.SelectedItems.Count >= 0)
+            {
+                var prod = ProductListView.SelectedItem as Product;
+                selectedProducts.Add(prod);
+
+                var selOP = selectedOrderProducts.Where(p => Equals(p.ProductArticleNumber, prod.ProductArticleNumber));
+
+                if (selOP.Count() == 0)
+                {
+                    var newOrderProd = new OrderProduct
+                    {
+                        OrderID = currentOrder.OrderID,
+                        ProductArticleNumber = prod.ProductArticleNumber,
+                        OrderProductCount = 1
+                    };
+
+                    selectedOrderProducts.Add(newOrderProd);
+
+                    // Добавляем продукт в список для отображения
+                    if (!selectedProducts.Any(p => p.ProductArticleNumber == prod.ProductArticleNumber))
+                    {
+                        selectedProducts.Add(prod);
+                    }
+                }
+                else
+                {
+                    // Если товар уже есть в заказе, увеличиваем количество
+                    foreach (OrderProduct p in selectedOrderProducts)
+                    {
+                        if (p.ProductArticleNumber == prod.ProductArticleNumber)
+                        {
+                            p.OrderProductCount++;
+                        }
+                    }
+                }
+                OrderBtn.Visibility = Visibility.Visible;
+                ProductListView.SelectedIndex = -1;
+            }
+        }
+
+        private void OrderBtn_Click(object sender, RoutedEventArgs e)
+        {
+            selectedProducts = selectedProducts.Distinct().ToList();
+            OrderWindow orderWindow = new OrderWindow(selectedProducts, selectedOrderProducts, FIOTB.Text, currentUser);
+
+            if (orderWindow.ShowDialog() == true)
+            {
+                // Если заказ успешно сохранен, очищаем списки
+                selectedProducts.Clear();
+                selectedOrderProducts.Clear();
+                OrderBtn.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                if (selectedProducts == null || selectedProducts.Count == 0)
+                {
+                    OrderBtn.Visibility = Visibility.Hidden;
+                }
+            }
         }
     }
 }

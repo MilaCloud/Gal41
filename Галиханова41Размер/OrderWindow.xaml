@@ -1,0 +1,106 @@
+﻿<Window x:Class="Галиханова41Размер.OrderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Галиханова41Размер"
+        mc:Ignorable="d"
+        Title="OrderWindow" Height="800" Width="1000" FontFamily="Comic Sans MS" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Дата формирования заказа"></TextBlock>
+            <DatePicker IsEnabled="False" Name="OrderDP" Grid.Row="0" Grid.Column="1" FontSize="20"></DatePicker>
+            <TextBlock Grid.Row="1" Text="Дата доставки заказа"></TextBlock>
+            <DatePicker IsEnabled="False" Name="DeliveryDP" Grid.Row="1" Grid.Column="1" FontSize="20"></DatePicker>
+            <TextBlock Grid.Row="2" Text="ФИО клиента"></TextBlock>
+            <TextBlock Name="ClientTB" Grid.Row="2" Grid.Column="1"></TextBlock>
+            <TextBlock Grid.Row="3" Text="Номер заказа"></TextBlock>
+            <TextBlock Name="TBOrderID" Grid.Row="3" Grid.Column="1"></TextBlock>
+        </Grid>
+
+        <ListView Name="ShoeListView" Grid.Row="1" Grid.ColumnSpan="2" d:ItemsSource="{d:SampleData ItemCount=5}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="500"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Image Width="200" Height="200" Stretch="Uniform" Grid.Column="0" Grid.RowSpan="5" HorizontalAlignment="Center">
+                            <Image.Source>
+                                <Binding Path="ProductPhotoPath">
+                                    <Binding.TargetNullValue>
+                                        <ImageSource>
+                                            Img/picture.png
+                                        </ImageSource>
+                                    </Binding.TargetNullValue>
+                                </Binding>
+                            </Image.Source>
+                        </Image>
+
+                        <TextBlock Text="{Binding ProductName}" FontWeight="Bold" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" FontSize="20"></TextBlock>
+                        <TextBlock Text="{Binding ProductDescription}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" TextWrapping="Wrap" FontSize="20"></TextBlock>
+                        <TextBlock Text="{Binding ProductManufacturer}" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" FontSize="20"></TextBlock>
+                        <TextBlock Text="{Binding ProductCost, StringFormat={}{0:N2} руб.}" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" FontSize="20"></TextBlock>
+
+                        <TextBlock Text="Скидка" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" FontSize="20"></TextBlock>
+                        <TextBlock Text="{Binding ProductDiscountAmount, StringFormat={}{0} %}" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50"></TextBlock>
+
+                        <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal">
+                            <Button Name="BtnMinus" Click="BtnMinus_Click" Content="-" Width="30"></Button>
+                            <TextBlock Text="{Binding Quantity}" FontSize="20"></TextBlock>
+                            <Button Name="BtnPlus" Click="BtnPlus_Click" Content="+" Width="30"></Button>
+                            <Button Name="BtnDelete" Click="BtnDelete_Click" Content="Удалить" Margin="20,0,0,0"></Button>
+                        </StackPanel>
+
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Пункт выдачи"></TextBlock>
+        <ComboBox Name="PickupCombo" SelectionChanged="PickupCombo_SelectionChanged" DisplayMemberPath="PickUpPointAddress" SelectedValuePath="PickUpPointID" Margin="5" Grid.Row="2" Grid.Column="1"></ComboBox>
+
+        <Button Name="SaveBtn" Click="SaveBtn_Click" Grid.Row="3" Grid.Column="1" Content="Заказать"></Button>
+        <WrapPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="0">
+            <TextBlock Text="Общая стоимость: "></TextBlock>
+            <TextBlock Name="SumCostTB"></TextBlock>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Скидка: "></TextBlock>
+                <TextBlock Name="SumDiscountTB"></TextBlock>
+            </StackPanel>
+        </WrapPanel>
+    </Grid>
+</Window>

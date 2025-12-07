@@ -25,7 +25,7 @@ namespace Галиханова41Размер
         public System.DateTime OrderDeliveryDate { get; set; }
         public int OrderPickupPoint { get; set; }
         public Nullable<int> OrderClientID { get; set; }
-        public int OrderCode { get; set; }
+        public Nullable<int> OrderCode { get; set; }
         public string OrderStatus { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
